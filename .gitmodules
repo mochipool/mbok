@@ -1,0 +1,12 @@
+[submodule "themes/pickles"]
+	path = themes/pickles
+	url = git@github.com:mismith0227/hugo_theme_pickles.git
+[submodule "themes/hugo-dead-simple"]
+	path = themes/hugo-dead-simple
+	url = git@github.com:barklan/hugo-dead-simple.git
+[submodule "themes/hugo-simple"]
+	path = themes/hugo-simple
+	url = https://github.com/maolonglong/hugo-simple.git
+[submodule "themes/hugo-bearblog"]
+	path = themes/hugo-bearblog
+	url = https://github.com/janraasch/hugo-bearblog.git

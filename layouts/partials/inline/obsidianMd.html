@@ -1,0 +1,50 @@
+{{- define "partials/inline/obsidianMd.html" -}}
+  {{- $content := .content -}}
+  {{- $pageRelLink := .pageRelLink -}}
+
+  {{- $regexLinks := `href="([^"]*)` -}}
+
+  {{- $links := $content | findRE $regexLinks -}}
+
+  {{- /* Run through all the links in content */ -}}
+  {{- range $links -}}
+    {{- $source := . -}}
+
+    {{- /* Extract only URL from source */ -}}
+    {{- $url := substr . 6 -}}
+
+    {{- /* Skip external link */ -}}
+    {{- if hasPrefix $url "https://" -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- if hasPrefix $url "http://" -}}
+      {{- continue -}}
+    {{- end -}}
+
+    {{- /* Convert link to a fragment */ -}}
+    {{- if hasPrefix $url "#" -}}
+      {{- $baseName := path.BaseName $pageRelLink -}}
+      {{- $url = path.Join $baseName $url -}}
+    {{- end -}}
+
+    {{- /* Convert URL */ -}}
+    {{- $url = lower $url -}}
+    {{- $url = replace $url " - " " " -}}
+    {{- $url = replace $url " " "-" -}}
+    {{- $url = replace $url "%20" "-" -}}
+    {{- $url = replace $url ".md" "" -}}
+    {{- $url = replace $url "#" "/#" -}}
+    {{- if hasPrefix $url "../" -}}
+      {{- $url = replace $url "../" "../../" -}}
+    {{- else -}}
+      {{- $url = print "../" $url -}}
+    {{- end -}}
+    {{- $link := print `href="` $url -}}
+
+    {{- /* Replace link in content */ -}}
+    {{- $content = replace $content $source $link -}}
+  {{- end -}}
+
+  {{- /* Output content */ -}}
+  {{- $content | safeHTML -}}
+{{- end -}}
